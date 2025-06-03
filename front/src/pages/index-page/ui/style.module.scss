@@ -1,0 +1,204 @@
+.save {
+  height: 60px;
+}
+
+.save:hover {
+  background-color: greenyellow;
+}
+
+.save:active {
+  background-color: yellow;
+}
+
+.task {
+  margin-top: 40px;
+}
+
+.writeTask {
+  display: flex;
+  background-color: cornflowerblue;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.taskButtonDelete:hover {
+  background-color: red;
+}
+
+.taskButtonDelete:active {
+  background-color: darkred;
+}
+
+.taskButtonDone:hover {
+  background-color: greenyellow;
+}
+
+.taskButtonDone:active {
+  background-color: yellow;
+}
+
+.taskManager {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.title {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.taskInputContainer {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  .taskInput {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+  }
+
+  .addButton {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0 1.5rem;
+    cursor: pointer;
+    height: 60px;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #2980b9;
+    }
+
+    &:disabled {
+      background-color: #95a5a6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.tasksList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.taskItem {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &.completed {
+    opacity: 0.7;
+  }
+}
+
+.taskText {
+  margin: 0;
+  flex-grow: 1;
+  color: #2c3e50;
+
+  .completed & {
+    text-decoration: line-through;
+    color: #7f8c8d;
+  }
+}
+
+.taskActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actionButton {
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+
+  &.doneButton {
+    background-color: #2ecc71;
+    color: white;
+
+    &:hover {
+      background-color: #27ae60;
+    }
+  }
+
+  &.deleteButton {
+    background-color: #e74c3c;
+    color: white;
+
+    &:hover {
+      background-color: #c0392b;
+    }
+  }
+}
+
+.emptyState {
+  text-align: center;
+  color: #7f8c8d;
+  padding: 2rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.taskItem {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.taskManager.dark {
+  background: #2c3e50;
+  color: #ecf0f1;
+
+  .title {
+    color: #ecf0f1;
+  }
+
+  .taskItem {
+    background: #34495e;
+  }
+
+  .taskText {
+    color: #ecf0f1;
+  }
+}
+
+@media (max-width: 768px) {
+  .taskManager {
+    padding: 1rem;
+  }
+
+  .taskInputContainer {
+    flex-direction: column;
+  }
+}
