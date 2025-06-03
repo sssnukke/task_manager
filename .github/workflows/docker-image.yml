@@ -1,0 +1,46 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build Docker image
+      run: docker-compose -f dev.docker-compose.yml build
+    
+    - name: Save image to artifact
+      run: |
+        mkdir -p ./images
+        docker save my-image-name:latest -o ./images/image.tar
+    - uses: actions/upload-artifact@v3
+      with:
+        name: docker-image
+        path: ./images/image.tar
+    
+    - name: Deploy to server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        SSH_USER: ${{ secrets.SSH_USER }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        
+        # Copy files to server
+        scp -o StrictHostKeyChecking=no dev.docker-compose.yml $SSH_USER@$SERVER_IP:~/app/
+        scp -o StrictHostKeyChecking=no ./images/image.tar $SSH_USER@$SERVER_IP:~/app/
+        
+        # SSH and deploy
+        ssh -o StrictHostKeyChecking=no $SSH_USER@$SERVER_IP << EOF
+          cd ~/app
+          docker load -i image.tar
+          docker-compose -f dev.docker-compose.yml down
+          docker-compose -f dev.docker-compose.yml up -d
+        EOF
